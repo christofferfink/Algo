@@ -8,19 +8,18 @@ public class Main2 {
     public static void main(String[] args) throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        // Read the input
+
         String[] input = reader.readLine().split(" ");
         int N = Integer.parseInt(input[0]);
         int M = Integer.parseInt(input[1]);
         int F = Integer.parseInt(input[2]);
 
-        // Initialize the adjacency list for the train network
+        // Initialiser adjacenslisten for tognetværket
         ArrayList<int[]>[] adjList = new ArrayList[N];
         for (int i = 0; i < N; i++) {
             adjList[i] = new ArrayList<int[]>();
         }
 
-        // Read the train routes and build the adjacency list
         for (int i = 0; i < M; i++) {
             input = reader.readLine().split(" ");
             int v = Integer.parseInt(input[0]);
@@ -30,37 +29,38 @@ public class Main2 {
             adjList[u].add(new int[]{v, w});
         }
 
-        // Use Dijkstra's algorithm to calculate the shortest travel time between all pairs of train stations
-        int[][] trainTimes = new int[N][N];
+        // Brug Dijkstra's algoritme til at beregne den korteste rejsetid mellem alle togstationer
+        int[][] trainDistances = new int[N][N];
         for (int i = 0; i < N; i++) {
-            Arrays.fill(trainTimes[i], Integer.MAX_VALUE);
-            trainTimes[i][i] = 0;
+            Arrays.fill(trainDistances[i], Integer.MAX_VALUE);
+            trainDistances[i][i] = 0;
             PriorityQueue<int[]> pq = new PriorityQueue<int[]>((a, b) -> a[1] - b[1]);
             pq.add(new int[]{i, 0});
             while (!pq.isEmpty()) {
                 int[] curr = pq.poll();
                 int node = curr[0];
                 int dist = curr[1];
-                if (dist > trainTimes[i][node]) {
+                if (dist > trainDistances[i][node]) {
                     continue;
                 }
                 for (int[] edge : adjList[node]) {
                     int neighbor = edge[0];
-                    int weight = edge[1];
-                    int newDist = dist + weight;
-                    if (newDist < trainTimes[i][neighbor]) {
-                        trainTimes[i][neighbor] = newDist;
+                    int distance = edge[1];
+                    int newDist = dist + distance;
+                    if (newDist < trainDistances[i][neighbor]) {
+                        trainDistances[i][neighbor] = newDist;
                         pq.add(new int[]{neighbor, newDist});
                     }
                 }
             }
         }
 
+        // Test, om turen kan gennemføres inden for 2 timer
         for (int i = 0; i < F; i++) {
             input = reader.readLine().split(" ");
             int v = Integer.parseInt(input[0]);
             int u = Integer.parseInt(input[1]);
-            if (trainTimes[v][u] > 120) {
+            if (trainDistances[v][u] > 120) {
                 System.out.println("keep");
             } else {
                 System.out.println("cancel");
