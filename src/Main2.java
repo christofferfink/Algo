@@ -28,7 +28,7 @@ public class Main2 {
         // Tjek hver fly-rute og afgør, om den skal beholdes eller annulleres
         for (int[] rute : flyRoute) {
             int travelTime = shortestTravelTime(togKort, rute[0], rute[1]);
-            System.out.println(travelTime > 120 ? "behold" : "annuller");
+            System.out.println(travelTime > 120 ? "keep" : "cancel");
         }
     }
 
