@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.PriorityQueue;
 
 public class Main2 {
     public static void main(String[] args) throws Exception {
@@ -14,43 +12,32 @@ public class Main2 {
         int M = Integer.parseInt(input[1]);
         int F = Integer.parseInt(input[2]);
 
-        // Initialize the adjacency list for the train network
-        ArrayList<int[]>[] adjList = new ArrayList[N];
+        // Initialize the distance matrix for the train network
+        int[][] dist = new int[N][N];
+        for (int[] row : dist) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
         for (int i = 0; i < N; i++) {
-            adjList[i] = new ArrayList<int[]>();
+            dist[i][i] = 0;
         }
 
-        // Read the train routes and build the adjacency list
+        // Read the train routes and update the distance matrix
         for (int i = 0; i < M; i++) {
             input = reader.readLine().split(" ");
             int v = Integer.parseInt(input[0]);
             int u = Integer.parseInt(input[1]);
             int w = Integer.parseInt(input[2]);
-            adjList[v].add(new int[]{u, w});
-            adjList[u].add(new int[]{v, w});
+            dist[v][u] = w;
+            dist[u][v] = w;
         }
 
-        // Use Dijkstra's algorithm to calculate the shortest travel time between all pairs of train stations
-        int[][] trainTimes = new int[N][N];
-        for (int i = 0; i < N; i++) {
-            Arrays.fill(trainTimes[i], Integer.MAX_VALUE);
-            trainTimes[i][i] = 0;
-            PriorityQueue<int[]> pq = new PriorityQueue<int[]>((a, b) -> a[1] - b[1]);
-            pq.add(new int[]{i, 0});
-            while (!pq.isEmpty()) {
-                int[] curr = pq.poll();
-                int node = curr[0];
-                int dist = curr[1];
-                if (dist > trainTimes[i][node]) {
-                    continue;
-                }
-                for (int[] edge : adjList[node]) {
-                    int neighbor = edge[0];
-                    int weight = edge[1];
-                    int newDist = dist + weight;
-                    if (newDist < trainTimes[i][neighbor]) {
-                        trainTimes[i][neighbor] = newDist;
-                        pq.add(new int[]{neighbor, newDist});
+        // Use Floyd-Warshall algorithm to calculate the shortest travel time between all pairs of train stations
+        for (int k = 0; k < N; k++) {
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    if (dist[i][k] != Integer.MAX_VALUE && dist[k][j] != Integer.MAX_VALUE &&
+                            dist[i][k] + dist[k][j] < dist[i][j]) {
+                        dist[i][j] = dist[i][k] + dist[k][j];
                     }
                 }
             }
@@ -60,7 +47,7 @@ public class Main2 {
             input = reader.readLine().split(" ");
             int v = Integer.parseInt(input[0]);
             int u = Integer.parseInt(input[1]);
-            if (trainTimes[v][u] > 120) {
+            if (dist[v][u] > 120) {
                 System.out.println("keep");
             } else {
                 System.out.println("cancel");
