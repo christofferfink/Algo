@@ -1,19 +1,24 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main2 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Scanner sc = new Scanner(System.in);
-        int Nstations = sc.nextInt();
-        int Mtrainroute = sc.nextInt();
-        int Fflyroute = sc.nextInt();
-        int[][] togKort = new int[Nstations][Nstations]; // Nabo-matrix for tog-ruter
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] input = br.readLine().split(" ");
+        int Nstations = Integer.parseInt(input[0]);
+        int Mtrainroute = Integer.parseInt(input[1]);
+        int Fflyroute = Integer.parseInt(input[2]);
+        int[][] togKort = new int[Nstations][Nstations];
 
         // Udfyld togKort med input-tog-ruterne
         for (int i = 0; i < Mtrainroute; i++) {
-            int vStation = sc.nextInt();
-            int uStation = sc.nextInt();
-            int wStation = sc.nextInt();
+            input = br.readLine().split(" ");
+            int vStation = Integer.parseInt(input[0]);
+            int uStation = Integer.parseInt(input[1]);
+            int wStation = Integer.parseInt(input[2]);
             togKort[vStation][uStation] = wStation;
             togKort[uStation][vStation] = wStation;
         }
@@ -21,8 +26,9 @@ public class Main2 {
 
         int[][] flyRoute = new int[Fflyroute][2];
         for (int i = 0; i < Fflyroute; i++) {
-            flyRoute[i][0] = sc.nextInt(); // Station v
-            flyRoute[i][1] = sc.nextInt(); // Station u
+            input = br.readLine().split(" ");
+            flyRoute[i][0] = Integer.parseInt(input[0]);
+            flyRoute[i][1] = Integer.parseInt(input[1]);
         }
 
         // Tjek hver fly-rute og afgør, om den skal beholdes eller annulleres
