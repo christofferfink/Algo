@@ -11,7 +11,7 @@ public class Main2 {
         int Nstations = Integer.parseInt(input[0]);
         int Mtrainroute = Integer.parseInt(input[1]);
         int Fflyroute = Integer.parseInt(input[2]);
-        int[][] togKort = new int[Nstations][Nstations];
+        int[][] trainMap = new int[Nstations][Nstations];
 
         // Udfyld togKort med input-tog-ruterne
         for (int i = 0; i < Mtrainroute; i++) {
@@ -19,8 +19,8 @@ public class Main2 {
             int vStation = Integer.parseInt(input[0]);
             int uStation = Integer.parseInt(input[1]);
             int wStation = Integer.parseInt(input[2]);
-            togKort[vStation][uStation] = wStation;
-            togKort[uStation][vStation] = wStation;
+            trainMap[vStation][uStation] = wStation;
+            trainMap[uStation][vStation] = wStation;
         }
 
 
@@ -33,7 +33,7 @@ public class Main2 {
 
         // Tjek hver fly-rute og afgør, om den skal beholdes eller annulleres
         for (int[] rute : flyRoute) {
-            int travelTime = shortestTravelTime(togKort, rute[0], rute[1]);
+            int travelTime = shortestTravelTime(trainMap, rute[0], rute[1]);
             System.out.println(travelTime > 120 ? "keep" : "cancel");
         }
     }
