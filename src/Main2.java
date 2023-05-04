@@ -6,13 +6,12 @@ public class Main2 {
     public static void main(String[] args) throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        // Read the input
         String[] input = reader.readLine().split(" ");
         int N = Integer.parseInt(input[0]);
         int M = Integer.parseInt(input[1]);
         int F = Integer.parseInt(input[2]);
 
-        // Initialize the distance matrix for the train network
+        // Initialize afstands matrix for the train network
         int[][] dist = new int[N][N];
         for (int[] row : dist) {
             Arrays.fill(row, Integer.MAX_VALUE);
@@ -21,7 +20,7 @@ public class Main2 {
             dist[i][i] = 0;
         }
 
-        // Read the train routes and update the distance matrix
+        // læser togruter og opdaterer distance matrix
         for (int i = 0; i < M; i++) {
             input = reader.readLine().split(" ");
             int v = Integer.parseInt(input[0]);
@@ -31,7 +30,7 @@ public class Main2 {
             dist[u][v] = w;
         }
 
-        // Use Floyd-Warshall algorithm to calculate the shortest travel time between all pairs of train stations
+        // bruger Floyd-Warshall algorithm til at beregne kortest rejsetid
         for (int k = 0; k < N; k++) {
             for (int i = 0; i < N; i++) {
                 for (int j = 0; j < N; j++) {
